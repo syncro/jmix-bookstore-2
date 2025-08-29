@@ -10,7 +10,7 @@ jobs:
   ci:
     name: CI pipeline
     runs-on: ubuntu-latest
-
+    environment: test
     steps:
       - name: Git Checkout
         uses: actions/checkout@v1
