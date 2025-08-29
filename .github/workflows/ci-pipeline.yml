@@ -42,3 +42,4 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: jmix/jmix-bookstore:latest
+
