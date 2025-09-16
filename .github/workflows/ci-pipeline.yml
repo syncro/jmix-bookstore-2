@@ -31,7 +31,7 @@ jobs:
         env:
           PREMIUM_REPO_USER: ${{ secrets.PREMIUM_REPO_USER }}
           PREMIUM_REPO_PASS: ${{ secrets.PREMIUM_REPO_PASS }}
-        run: ./gradlew --no-daemon --no-build-cache --max-workers=1 -Dorg.gradle.jvmargs='-Xms8g -Xmx24g' -Pvaadin.productionMode=true bootJar
+        run: ./gradlew -Dorg.gradle.jvmargs='-Xms8g -Xmx24g' -Pvaadin.productionMode=true bootJar
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
