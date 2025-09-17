@@ -43,7 +43,6 @@ jobs:
           file: ./Dockerfile
           tags: jmix/jmix-bookstore:latest
       
-      - name: Check kubectl
       - uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG }}
