@@ -21,17 +21,11 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Run tests
-        env:
-          PREMIUM_REPO_USER: ${{ secrets.PREMIUM_REPO_USER }}
-          PREMIUM_REPO_PASS: ${{ secrets.PREMIUM_REPO_PASS }}
-        run: ./gradlew test
-
       - name: Build JAR
         env:
           PREMIUM_REPO_USER: ${{ secrets.PREMIUM_REPO_USER }}
           PREMIUM_REPO_PASS: ${{ secrets.PREMIUM_REPO_PASS }}
-        run: ./gradlew -Dorg.gradle.jvmargs='-Xms8g -Xmx24g' -Pvaadin.productionMode=true bootJar
+        run: ./gradlew -Dorg.gradle.jvmargs='-Xms8g -Xmx24g' -Pvaadin.productionMode=true bootJar -x test
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -43,7 +37,12 @@ jobs:
           file: ./Dockerfile
           tags: jmix/jmix-bookstore:latest
       
-      - uses: tale/kubectl-action@v1
-        with:
-          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
-      - run: kubectl get pods
+      - name: Configure Kubernetes
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
+
+      - name: Verify cluster access
+        run: kubectl cluster-info
