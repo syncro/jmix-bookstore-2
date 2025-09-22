@@ -42,7 +42,7 @@ jobs:
           mkdir -p ~/.kube
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
         env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
       - name: Verify cluster access
         run: kubectl cluster-info
