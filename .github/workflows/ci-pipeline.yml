@@ -45,4 +45,4 @@ jobs:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
       - name: Verify cluster access
-        run: kubectl cluster-info
+        run: kubectl cluster-info dump
