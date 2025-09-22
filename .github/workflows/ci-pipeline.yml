@@ -14,35 +14,27 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v1
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Build JAR
-        env:
-          PREMIUM_REPO_USER: ${{ secrets.PREMIUM_REPO_USER }}
-          PREMIUM_REPO_PASS: ${{ secrets.PREMIUM_REPO_PASS }}
-        run: ./gradlew -Dorg.gradle.jvmargs='-Xms8g -Xmx24g' -Pvaadin.productionMode=true bootJar -x test
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile
-          tags: jmix/jmix-bookstore:latest
       
       - name: Configure Kubernetes
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+          # Remove any newlines from the secret
+          echo "$KUBE_CONFIG" | tr -d '\n' | base64 -d > ~/.kube/config
+          
+          # Verify the config file was created properly
+          ls -la ~/.kube/
+          echo "=== Config file content ==="
+          cat ~/.kube/config
+          echo "=== End config file ==="
+          
+          # Set proper permissions
+          chmod 600 ~/.kube/config
+          
+          # Test basic config reading
+          kubectl config view
         env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
 
       - name: Verify cluster access
-        run: kubectl cluster-info dump
+        run: |
+          kubectl cluster-info
