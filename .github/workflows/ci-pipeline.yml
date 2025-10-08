@@ -9,7 +9,7 @@ on:
 jobs:
   ci:
     name: CI pipeline
-    runs-on: self-hosted
+    runs-on: arc-runner-set
     environment: test
     steps:
       - name: Git Checkout
