@@ -42,3 +42,19 @@ jobs:
       - name: Verify cluster access
         run: |
           kubectl cluster-info
+          
+      - name: Build JAR
+        env:
+          PREMIUM_REPO_USER: ${{ secrets.PREMIUM_REPO_USER }}
+          PREMIUM_REPO_PASS: ${{ secrets.PREMIUM_REPO_PASS }}
+        run: ./gradlew -Dorg.gradle.jvmargs='-Xms8g -Xmx24g' -Pvaadin.productionMode=true bootJar -x test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: jmix/jmix-bookstore:latest
