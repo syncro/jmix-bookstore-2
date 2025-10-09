@@ -42,7 +42,13 @@ jobs:
       - name: Verify cluster access
         run: |
           kubectl cluster-info
-          
+      
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'          
+      
       - name: Build JAR
         env:
           PREMIUM_REPO_USER: ${{ secrets.PREMIUM_REPO_USER }}
