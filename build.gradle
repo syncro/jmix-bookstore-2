@@ -140,6 +140,7 @@ idea {
         excludeDirs.addAll(files '.jmix', 'node_modules', 'src/main/frontend/generated/', 'src/main/bundles')
     }
 }
+
 bootRun { 
     args = ["--spring.profiles.active=dev"] 
 }
