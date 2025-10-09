@@ -1,0 +1,23 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+   "name": "jmix-bookstore-app-service"
+  },
+  "spec": {
+    "type": "NodePort",
+    "ports": [
+      {
+        "port": 8080,
+        "name": "jmix-bookstore-app-app"
+      },
+      {
+        "port": 5701,
+        "name": "jmix-bookstore-app-hazelcast"
+      }
+    ],
+    "selector": {
+      "app": "jmix-bookstore-app"
+    }
+  }
+}

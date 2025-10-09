@@ -119,3 +119,14 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: jmix/jmix-bookstore:latest
+
+
+      - name: Deploy to the k8s cluster
+          uses: azure/k8s-deploy@v4.9
+          with:
+            namespace: default
+            skip-tls-verify: true
+            manifests: |
+                k8s/
+              images: |
+                ghcr.io/syncro/jmix-bookstore-2:latest         

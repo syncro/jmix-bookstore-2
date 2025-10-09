@@ -1,0 +1,13 @@
+{
+  "apiVersion": "v1",
+  "kind": "ConfigMap",
+  "metadata": {
+    "name": "jmix-bookstore-db-config"
+  },
+  "data": {
+    "db_name": "jmix-bookstore",
+    "db_user": "root",
+    "db_password": "root",
+    "db_port": "5432"
+  }
+}

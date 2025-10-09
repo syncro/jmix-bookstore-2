@@ -1,0 +1,79 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "jmix-bookstore--db"
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "matchLabels": {
+        "app": "jmix-bookstore-db"
+      }
+    },
+    "strategy": {},
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "jmix-bookstore-db"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "jmix-bookstore-db-storage",
+            "persistentVolumeClaim": {
+              "claimName": "jmix-bookstore-db-pvclaim"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "image": "postgres",
+            "name": "jmix-bookstore-db",
+            "env": [
+              {
+                "name": "POSTGRES_USER",
+                "valueFrom": {
+                  "configMapKeyRef": {
+                    "name": "jmix-bookstore-db-config",
+                    "key": "db_user"
+                  }
+                }
+              },
+              {
+                "name": "POSTGRES_PASSWORD",
+                "valueFrom": {
+                  "configMapKeyRef": {
+                    "name": "jmix-bookstore-db-config",
+                    "key": "db_password"
+                  }
+                }
+              },
+              {
+                "name": "PGDATA",
+                "value": "/var/lib/postgresql/data/pgdata"
+              },
+              {
+                "name": "POSTGRES_DB",
+                "value": "jmix-bookstore"
+              }
+            ],
+            "ports": [
+              {
+                "containerPort": 5432,
+                "name": "jmix-bookstore-db"
+              }
+            ],
+            "volumeMounts": [
+              {
+                "name": "jmix-bookstore-db-storage",
+                "mountPath": "/var/lib/postgresql/data"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

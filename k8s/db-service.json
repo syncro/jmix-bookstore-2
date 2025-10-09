@@ -1,0 +1,19 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "jmix-bookstore-db-service"
+  },
+  "spec": {
+    "type": "NodePort",
+    "ports": [
+      {
+        "port": 5432,
+        "name": "jmix-bookstore-db-db"
+      }
+    ],
+    "selector": {
+      "app": "jmix-bookstore-db"
+    }
+  }
+}
