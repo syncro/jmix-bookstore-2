@@ -43,16 +43,25 @@ jobs:
         run: |
           kubectl cluster-info
       
-      - name: Set up JDK 21 with retry
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            bash -c "$(curl -fsSL https://raw.githubusercontent.com/actions/setup-java/main/setup.sh)" \
-              --distribution 'temurin' \
-              --java-version '21' \
-              --check-latest false
+      - name: Setup Java with manual download
+        run: |
+          # Try multiple download URLs
+          JDK_URLS=(
+            "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_linux_hotspot_21.0.2_13.tar.gz"
+            "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.1%2B12/OpenJDK21U-jdk_x64_linux_hotspot_21.0.1_12.tar.gz"
+          )
+          
+          for url in "${JDK_URLS[@]}"; do
+            echo "Trying: $url"
+            if curl -fL -o jdk.tar.gz "$url"; then
+              echo "Download successful"
+              tar -xzf jdk.tar.gz -C /opt/
+              echo "/opt/jdk-21.0.2+13/bin" >> $GITHUB_PATH
+              break
+            fi
+          done
+          
+          java -version
             
       - name: Build JAR
         env:
