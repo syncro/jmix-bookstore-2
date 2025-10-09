@@ -73,8 +73,9 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation 'org.postgresql:postgresql'
+    implementation 'org.postgresql:postgresql' 
 
+    implementation 'com.hazelcast:hazelcast' 
     // used for GeoJsonReader to parse geojson format from the LocationIQ API
     implementation 'org.locationtech.jts.io:jts-io-common:1.17.1'
 
