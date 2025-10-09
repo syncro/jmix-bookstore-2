@@ -45,6 +45,9 @@ jobs:
       
       - name: Setup Java with manual download
         run: |
+          # Create directory in workspace with proper permissions
+          mkdir -p java-install
+          
           # Try multiple download URLs
           JDK_URLS=(
             "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_x64_linux_hotspot_21.0.2_13.tar.gz"
@@ -55,13 +58,22 @@ jobs:
             echo "Trying: $url"
             if curl -fL -o jdk.tar.gz "$url"; then
               echo "Download successful"
-              tar -xzf jdk.tar.gz -C /opt/
-              echo "/opt/jdk-21.0.2+13/bin" >> $GITHUB_PATH
+              # Extract to current directory (workspace)
+              tar -xzf jdk.tar.gz
+              # Find the extracted directory
+              JDK_DIR=$(find . -name "jdk-21*" -type d | head -1)
+              echo "JDK found in: $JDK_DIR"
+              # Add to PATH
+              echo "$GITHUB_WORKSPACE/$JDK_DIR/bin" >> $GITHUB_PATH
               break
+            else
+              echo "Download failed, trying next URL..."
             fi
           done
           
-          java -version
+          # Verify installation
+          echo "Current PATH: $PATH"
+          $GITHUB_WORKSPACE/$JDK_DIR/bin/java -version
             
       - name: Build JAR
         env:
