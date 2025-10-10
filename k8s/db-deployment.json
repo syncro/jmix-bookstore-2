@@ -2,7 +2,7 @@
   "apiVersion": "apps/v1",
   "kind": "Deployment",
   "metadata": {
-    "name": "jmix-bookstore--db"
+    "name": "jmix-bookstore-db"
   },
   "spec": {
     "replicas": 1,
