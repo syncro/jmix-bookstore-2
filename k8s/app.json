@@ -23,7 +23,7 @@
 	],
         "containers": [
           {
-            "image": "ghcr.io/syncro/jmix-bookstore:latest",
+            "image": "ghcr.io/syncro/jmix-bookstore-2:latest",
             "imagePullPolicy": "Always",
             "name": "jmix-bookstore-app",
             "env": [
