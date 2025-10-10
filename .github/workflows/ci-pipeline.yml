@@ -91,3 +91,13 @@ jobs:
       - name: Build Container Image
         run: |
           ./gradlew jib -Djib.to.image=ghcr.io/${{ github.repository }}:latest -Djib.from.image=eclipse-temurin:21-jre
+
+      - name: Deploy to the k8s cluster
+        uses: azure/k8s-deploy@v4.9
+        with:
+          namespace: default
+          skip-tls-verify: true
+          manifests: |
+            k8s/
+          images: |
+            ghcr.io/${{ github.repository }}:latest
