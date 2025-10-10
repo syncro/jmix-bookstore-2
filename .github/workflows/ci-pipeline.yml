@@ -10,6 +10,10 @@ jobs:
   ci:
     name: CI pipeline
     runs-on: arc-runner-set
+    services:
+      docker:
+        image: docker:dind
+        options: --privileged    
     environment: test
     steps:
       - name: Git Checkout
