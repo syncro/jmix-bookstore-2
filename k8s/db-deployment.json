@@ -62,7 +62,7 @@
             "ports": [
               {
                 "containerPort": 5432,
-                "name": "jmix-bookstore-db"
+                "name": "bookstore-db"
               }
             ],
             "volumeMounts": [
