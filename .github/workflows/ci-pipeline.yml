@@ -94,6 +94,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.sha }}
-          context: ./
-          file: ./Dockerfile
+          context: .
+          file: Dockerfile
+          verbosity: debug
           push: true
