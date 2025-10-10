@@ -69,7 +69,7 @@
               },
               {
                 "name": "SPRING_PROFILES_ACTIVE",
-                "value": "prod"
+                "value": "k8s"
               }
             ],
             "lifecycle": {
