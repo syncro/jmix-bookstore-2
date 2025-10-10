@@ -81,22 +81,13 @@ jobs:
           PREMIUM_REPO_PASS: ${{ secrets.PREMIUM_REPO_PASS }}
         run: ./gradlew -Dorg.gradle.jvmargs='-Xms8g -Xmx24g' -Pvaadin.productionMode=true bootJar -x test
 
-      - uses: docker/metadata-action@v3
-        id: metadata
+      - name: Set up Kaniko
+        uses: int128/kaniko-action@v1
         with:
-          images: ghcr.io/${{ github.repository }}
-      - uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: int128/kaniko-action@v1
-        with:
+          image: your-registry/your-image:tag
+          context: ./
+          dockerfile: ./Dockerfile
           push: true
-          tags: ${{ steps.metadata.outputs.tags }}
-          labels: ${{ steps.metadata.outputs.labels }}
-          cache: true
-          cache-repository: ghcr.io/${{ github.repository }}/cache
 
       - name: Deploy to the k8s cluster
         uses: azure/k8s-deploy@v4.9
